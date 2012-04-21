@@ -2,6 +2,7 @@
 
 require 'yaml'
 require 'date'
+require 'json'
 
 class Host
 
