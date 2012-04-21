@@ -1,3 +1,0 @@
-= CSIL Who / CSIL Pollr
-
-A baby project.
