@@ -2,50 +2,15 @@
 %html{:lang => "en"}
   %head
     %title= "CSIL Pollr"
-    %link{:rel => "stylesheet", :type => "text/css", :href => "app.css"}
+    %link{:rel => "stylesheet", :type => "text/css", :href => "css/app.css"}
   %body
     #status_box
     #header
       %h1= "CSIL @ UCSB"
-    - status = lambda{|n| hosts[n] ? ' occupied' : ' available'}
-    %table
-      %tr.row.laptops
-        - (1..9).each do |i|
-          %td.machine.unnamed
-      %tr.row.empty
-        - (1..9).each do |i|
-          %td
-      %tr.row.flipped
-        - [:cartman, :elroy, :dagwood, :calvin].each do |host|
-          %td{:id => "#{host}", :class => "machine#{status.call(host)}"}
-        %td.divider
-        - [:snoopy, :blondie, :brain, :shaggy].each do |host|
-          %td{:id => "#{host}", :class => "machine#{status.call(host)}"}
-      %tr.row
-        - [:dudley, :lupin, :scooby, :popey].each do |host|
-          %td{:id => "#{host}", :class => "machine#{status.call(host)}"}
-        %td.divider
-        - [:kenny, :optimus, :bullwinkle, :wacko].each do |host|
-          %td{:id => "#{host}", :class => "machine#{status.call(host)}"}
-      - (1..2).each do |i|
-        %tr.row.empty
-          - (1..9).each do |j|
-            %td
-        %tr.row.flipped
-          - (1..4).each do |j|
-            %td.machine.unnamed
-          %td.divider
-          - (1..4).each do |j|
-            %td.machine.unnamed
-        %tr.row
-          - (1..4).each do |j|
-            %td.machine.unnamed
-          %td.divider
-          - (1..4).each do |j|
-            %td.machine.unnamed
+    = table
     #footer
       %p.fleft
         %a{:href => "https://github.com/tjeezy/csilwho", :title => "View source on github"}= "View source on github"
       %p.fright.timestamp= timestamp
-    %script{:src => "./jquery-1.7.2.min.js"}
-    %script{:src => "./app.js"}
+    %script{:src => "./js/jquery-1.7.2.min.js"}
+    %script{:src => "./js/app.js"}

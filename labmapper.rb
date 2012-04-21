@@ -51,7 +51,7 @@ class Host
 
 end
 
-class CsilPoller
+class HostPoller
 
   # TODO add to these
   @@hostnames = [:cartman, :elroy, :dagwood, :calvin]
@@ -82,6 +82,6 @@ class CsilPoller
 end
 
 if $0 == __FILE__
-  CsilPoller.poll
-  CsilPoller.serialize('socket.yaml')
+  HostPoller.poll
+  HostPoller.serialize('socket.yaml')
 end
