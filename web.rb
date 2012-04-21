@@ -2,6 +2,7 @@
 
 require 'sinatra'
 require 'yaml'
+require 'haml'
 
 get '/' do
   hosts = []
@@ -14,5 +15,5 @@ get '/' do
   hosts.each do |host|
     nhosts[host.ivars['name']] = host.ivars['current_user']
   end
-  erb :index, :locals => {:hosts => nhosts, :timestamp => timestamp[0].strftime('%Y/%m/%d @ %H:%M')}
+  haml :index, :locals => {:hosts => nhosts, :timestamp => timestamp[0].strftime('%Y/%m/%d @ %H:%M')}
 end

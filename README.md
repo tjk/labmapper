@@ -9,12 +9,10 @@ Installation
 ------------
 
     $ git clone https://tjeezy@github.com/tjeezy/csilwho.git
-    $ rvm use 1.9.2
-    $ rvm gemset create csilwho
-    $ rvm gemset use csilwho
-    $ bundle install                # grab dependencies
-    $ ./csilwho.rb                  # creates socket.yaml
-    $ ./web.rb                      # http://localhost:4567
+    $ rvm use 1.9.2@csilwho --create  # local ruby+gems container
+    $ bundle install                  # grab dependencies
+    $ ./csilwho.rb                    # creates socket.yaml
+    $ ./web.rb                        # http://localhost:4567
 
 Create CRON job to run csilwho every [n] minutes.
 
