@@ -1,0 +1,15 @@
+html {overflow-y: scroll}
+body {width: 720px; margin: 0 auto}
+#header {text-align: center; border-bottom: 1px solid black; margin-bottom: 30px}
+#footer {text-align: center; border-top: 1px solid black; margin-top: 30px}
+table {margin: 0 auto; border-collapse: collapse; border-spacing: 0}
+td {width: 40px; height: 40px; line-height: 1px}
+.machine {border: 5px solid white}
+/* .hovered {border: 1px solid black} */
+.available {background: #a6d785}
+.occupied {background: #f08080}
+.unnamed {background: #555}
+.fleft {float: left; width: 300px; text-align: left}
+.fright {float: right; width: 300px; text-align: right}
+.timestamp {font-family: 'Verdana'}
+#status_box {display: none; position: absolute; background: white; padding: 10px; border: 1px solid black}
