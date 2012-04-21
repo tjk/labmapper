@@ -19,4 +19,4 @@ Create CRON job to run csilwho every [n] minutes.
 TODO
 ----
 
-- so much
+- make images same size and use background instead of img tag
