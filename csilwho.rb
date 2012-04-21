@@ -30,6 +30,18 @@ class Host
     puts "#{@name}: #{@current_user}"
   end
 
+  def to_json(*a)
+    {
+      json_class: self.class.name,
+      name: @name,
+      current_user: @current_user
+    }.to_json(*a)
+  end
+
+  def self.json_create(o)
+    new(o["name"])
+  end
+
   private
 
   def ssh(cmd)
