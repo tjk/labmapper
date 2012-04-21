@@ -1,4 +1,5 @@
-= CSIL Who / CSIL Pollr
+CSIL Who / CSIL Pollr
+=====================
 
 ![CSIL Pollr screenshot](https://github.com/tjeezy/csilwho/raw/master/screenshot.png "CSIL Pollr screenshot")
 
