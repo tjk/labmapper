@@ -3,6 +3,7 @@
 require 'sinatra'
 require 'yaml'
 require 'haml'
+require 'json'
 
 def parserc
   fname = Dir['./*.labrc'][0]
@@ -71,12 +72,17 @@ get '/' do
   hosts = []
   timestamp = []
   $/ = "\n\n"
-  File.open('socket.yaml', 'r').each_with_index do |object, i|
-    (i == 0 ? timestamp : hosts)  << YAML::load(object)
+
+  report = {}
+  File.open('socket.json','r') do |file|
+    report = JSON.parse(file.read)
   end
+
+  timestamp << DateTime.parse(report["timestamp"])
+
   nhosts = {}
-  hosts.each do |host|
-    nhosts[host.ivars['name']] = host.ivars['current_user']
+  report["hosts"].each do |name, user|
+    nhosts[name] = user
   end
   puts parserc
   table = Haml::Engine.new(parserc).render(Object.new, :hosts => nhosts)
