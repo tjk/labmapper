@@ -83,3 +83,7 @@ get '/' do
   puts table
   haml :index, :locals => {:table => table, :timestamp => timestamp[0].strftime('%Y/%m/%d @ %H:%M')}
 end
+
+get '/json' do
+  send_file 'socket.json'
+end
