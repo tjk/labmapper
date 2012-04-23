@@ -46,7 +46,7 @@ end
 
 def lines2haml(tokens, lines, valids)
   haml = "- status = lambda {|n| hosts[n] ? ' occupied' : ' available'}\n"
-  haml += "%table\n"
+  haml += "%table{:cellpadding => 0}\n"
   lines.each do |line|
     m = line.match(/^;(#{valids}*)\|?(\..*)*$/)
     if m
@@ -57,7 +57,7 @@ def lines2haml(tokens, lines, valids)
       # haml += "    - #{toks.chars.collect {|t| tokens[t][:id].to_sym if tokens[t]}.inspect}.each do |host|\n"
       toks.chars.each do |t|
         if tokens[t]
-          haml += "    %td{:id => \"#{tokens[t][:id]}\", :class => \"#{tokens[t][:classes].join(' ')}\#{status.call('#{tokens[t][:id]}')} #{tokens[t][:dir]}\"}\n"
+          haml += "    %td{:id => \"#{tokens[t][:id]}\", :class => \"#{tokens[t][:classes].join(' ')}\#{status.call(:'#{tokens[t][:id]}')} #{tokens[t][:dir]}\"}\n"
         else
           haml += "    %td\n"
         end
@@ -78,8 +78,6 @@ get '/' do
   hosts.each do |host|
     nhosts[host.ivars['name']] = host.ivars['current_user']
   end
-  puts parserc
   table = Haml::Engine.new(parserc).render(Object.new, :hosts => nhosts)
-  puts table
   haml :index, :locals => {:table => table, :timestamp => timestamp[0].strftime('%Y/%m/%d @ %H:%M')}
 end
