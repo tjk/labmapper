@@ -13,3 +13,5 @@ td {width: 40px; height: 40px; line-height: 1px}
 .fright {float: right; width: 300px; text-align: right}
 .timestamp {font-family: 'Verdana'}
 #status_box {display: none; position: absolute; background: white; padding: 10px; border: 1px solid black}
+#status_box p {margin: 0}
+.hidden {display: none}

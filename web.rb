@@ -46,7 +46,8 @@ def parserc
 end
 
 def lines2haml(tokens, lines, valids)
-  haml = "- status = lambda {|n| hosts[n] ? ' occupied' : ' available'}\n"
+  haml = "- availability = lambda {|n| hosts[n] && hosts[n]['user'] ? ' occupied' : ' available'}\n"
+  haml += "- uptime = lambda {|n| hosts[n] && hosts[n]['uptime']}\n"
   haml += "%table{cellpadding: 0}\n"
   lines.each do |line|
     m = line.match(/^;(#{valids}*)\|?(\..*)*$/)
@@ -58,7 +59,8 @@ def lines2haml(tokens, lines, valids)
       # haml += "    - #{toks.chars.collect {|t| tokens[t][:id].to_sym if tokens[t]}.inspect}.each do |host|\n"
       toks.chars.each do |t|
         if tokens[t]
-          haml += "    %td{id: \"#{tokens[t][:id]}\", class: \"#{tokens[t][:classes].join(' ')}\#{status.call('#{tokens[t][:id]}')} #{tokens[t][:dir]}\"}\n"
+          haml += "    %td{id: \"#{tokens[t][:id]}\", class: \"#{tokens[t][:classes].join(' ')}\#{availability.call('#{tokens[t][:id]}')} #{tokens[t][:dir]}\"}\n"
+          haml += "      %span{class: \"uptime hidden\"}= \"\#{uptime.call('#{tokens[t][:id]}')}\"\n"
         else
           haml += "    %td\n"
         end
@@ -69,25 +71,21 @@ def lines2haml(tokens, lines, valids)
 end
 
 get '/' do
-  hosts = []
-  timestamp = []
-  $/ = "\n\n"
-
-  report = {}
+  input = {}
   File.open('socket.json','r') do |file|
-    report = JSON.parse(file.read)
+    input = JSON.parse(file.read)
   end
 
-  timestamp << DateTime.parse(report["timestamp"])
+  timestamp = DateTime.parse(input['timestamp'])
+  formatted_timestamp = timestamp.strftime('%Y/%m/%d @ %H:%M')
 
-  nhosts = {}
-  report["hosts"].each do |name, user|
-    nhosts[name] = user
-  end
-  table = Haml::Engine.new(parserc).render(Object.new, hosts: nhosts)
-  haml :index, locals: {table: table, timestamp: timestamp[0].strftime('%Y/%m/%d @ %H:%M')}
+  puts parserc
+  table = Haml::Engine.new(parserc).render(Object.new, hosts: input['hosts'])
+  haml :index, locals: {table: table, timestamp: formatted_timestamp}
 end
 
-get '/json' do
-  send_file 'socket.json'
-end
+# TODO remove this or obfuscate user on host? (privacy issue)
+# TODO either way, i propose the route to be /hosts.json
+# get '/json' do
+#   send_file 'socket.json'
+# end

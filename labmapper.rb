@@ -6,47 +6,48 @@ require 'json'
 
 class Host
 
-  attr_accessor :current_user
-  attr_accessor :name
-  @@suffix = '.cs.ucsb.edu'
-  @@invalid_users = ['(unknown)', 'root']
+  attr_accessor :name, :user, :uptime
+  @@suffix = '.cs.ucsb.edu' # TODO grab from labrc
+  @@invalid_users = ['(unknown)', 'root'] # TODO fix
 
   def initialize(name)
     @name = name
-    @current_user = nil
+    @user = @uptime = nil
   end
 
-  def update_current_user
-    output = ssh('who')
-    entries = output.split("\n")
-    entries.each do |entry|
-      user, tty, date, time, ip = entry.split
-      if ip.nil? || ip.size < 6
-        @current_user = user unless @@invalid_users.index(user)
+  def poll
+    # TODO check errors here or in ssh()
+    @uptime, *whos = ssh(['uptime', 'who']).split("\n")
+    whos.each do |who|
+      user, tty, date, time, ip = who.split
+      if ip.nil? || ip.size < 6 # TODO no magic number please
+        @user = user unless @@invalid_users.index(user)
       end
     end
+    debug # TODO if $DEBUG ?
   end
 
   def debug
-    puts "#{@name}: #{@current_user}"
+    # TODO let's use log4r
+    puts "#{@name}: #{@user}"
   end
 
   def to_json(*a)
-    {name: @name, current_user: @current_user}.to_json(*a)
+    {name: @name, user: @user}.to_json(*a)
   end
 
   private
 
-  def ssh(cmd)
+  def ssh(cmds=['who'])
     # TODO check status (machine may be down)
-    `ssh #{@name}#{@@suffix} #{cmd}`
+    `ssh #{@name}#{@@suffix} '#{cmds.join(' ; ')}'`
   end
 
 end
 
 class HostPoller
 
-  # TODO add to these
+  # TODO use labrc file
   @@hostnames = [:cartman, :elroy, :dagwood, :calvin]
 
   @@hosts = []
@@ -55,20 +56,16 @@ class HostPoller
   end
 
   def self.poll
-    @@hosts.each do |host|
-      host.update_current_user
-      host.debug
-    end
+    @@hosts.map(&:poll)
   end
 
   def self.serialize(file)
     File.open(file, 'w') do |f|
-      map = {timestamp: DateTime.now, hosts: {}}
-
+      output = {timestamp: DateTime.now, hosts: {}}
       @@hosts.each do |host|
-        map[:hosts][host.name] = host.current_user
+        output[:hosts][host.name] = {user: host.user, uptime: host.uptime}
       end
-      f.puts map.to_json
+      f.puts output.to_json
     end
   end
 
