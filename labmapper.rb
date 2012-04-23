@@ -32,10 +32,7 @@ class Host
   end
 
   def to_json(*a)
-    {
-      name: @name,
-      current_user: @current_user
-    }.to_json(*a)
+    {name: @name, current_user: @current_user}.to_json(*a)
   end
 
   private

@@ -17,7 +17,7 @@ def parserc
       id = m[:id] ? m[:id][1..-1] : m[:re]
       classes = m[:classes] ? m[:classes].split('.')[1..-1] : []
       dir = {'^' => 'up', '>' => 'right', 'v' => 'down', '<' => 'left'}[m[:dir]]
-      tokens[m[:re]] = {:id => id, :dir => dir, :classes => classes}
+      tokens[m[:re]] = {id: id, dir: dir, classes: classes}
     end
   end
   tokens.dup.each do |kcopy, vcopy|
@@ -35,7 +35,7 @@ def parserc
         sub_tokens = {}
         more_tokens = alphabet.scan(/[#{kcopy}]/)
         more_tokens.each do |token|
-          sub_tokens[token] = vcopy.merge({:id => token})
+          sub_tokens[token] = vcopy.merge({id: token})
         end
         tokens = sub_tokens.merge!(tokens)
         tokens[' '] = nil # empty block -- TODO handle better
@@ -47,7 +47,7 @@ end
 
 def lines2haml(tokens, lines, valids)
   haml = "- status = lambda {|n| hosts[n] ? ' occupied' : ' available'}\n"
-  haml += "%table{:cellpadding => 0}\n"
+  haml += "%table{cellpadding: 0}\n"
   lines.each do |line|
     m = line.match(/^;(#{valids}*)\|?(\..*)*$/)
     if m
@@ -58,7 +58,7 @@ def lines2haml(tokens, lines, valids)
       # haml += "    - #{toks.chars.collect {|t| tokens[t][:id].to_sym if tokens[t]}.inspect}.each do |host|\n"
       toks.chars.each do |t|
         if tokens[t]
-          haml += "    %td{:id => \"#{tokens[t][:id]}\", :class => \"#{tokens[t][:classes].join(' ')}\#{status.call(:'#{tokens[t][:id]}')} #{tokens[t][:dir]}\"}\n"
+          haml += "    %td{id: \"#{tokens[t][:id]}\", class: \"#{tokens[t][:classes].join(' ')}\#{status.call('#{tokens[t][:id]}')} #{tokens[t][:dir]}\"}\n"
         else
           haml += "    %td\n"
         end
@@ -84,8 +84,8 @@ get '/' do
   report["hosts"].each do |name, user|
     nhosts[name] = user
   end
-  table = Haml::Engine.new(parserc).render(Object.new, :hosts => nhosts)
-  haml :index, :locals => {:table => table, :timestamp => timestamp[0].strftime('%Y/%m/%d @ %H:%M')}
+  table = Haml::Engine.new(parserc).render(Object.new, hosts: nhosts)
+  haml :index, locals: {table: table, timestamp: timestamp[0].strftime('%Y/%m/%d @ %H:%M')}
 end
 
 get '/json' do

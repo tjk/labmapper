@@ -14,7 +14,7 @@ Installation
     $ ./labmapper.rb                    # creates socket.yaml
     $ ./web.rb                          # http://localhost:4567
 
-Create CRON job to run csilwho every [n] minutes.
+Create CRON job to run labmapper every [n] minutes.
 
 TODO
 ----

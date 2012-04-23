@@ -1,3 +1,2 @@
 *.sw[nop]
-socket.yaml
-socket.json
+socket.*
