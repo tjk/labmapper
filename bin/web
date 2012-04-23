@@ -4,9 +4,9 @@ unless $LOAD_PATH.include?(File.dirname(__FILE__) + '/../lib')
   $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
 end
 
+require 'sinatra'
 require 'date'
 require 'json'
-require 'sinatra'
 require 'haml'
 require 'labmapper'
 
