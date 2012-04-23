@@ -11,10 +11,14 @@ Installation
     $ git clone https://tjeezy@github.com/tjeezy/labmapper.git
     $ rvm use 1.9.2@labmapper --create  # local ruby+gems container
     $ bundle install                    # grab dependencies
-    $ ./labmapper.rb                    # creates socket.yaml
-    $ ./web.rb                          # http://localhost:4567
 
-Create CRON job to run labmapper every [n] minutes.
+Usage
+-----
+
+    $ ./bin/poller                      # initial poll (creates socket.json)
+    $ ./bin/web                         # http://localhost:4567
+
+Then create a CRON job to run ./bin/poller every [n] minutes.
 
 TODO
 ----
