@@ -53,7 +53,7 @@ module Labmapper
       # doesn't check RSA fingerprint
       options += '-o UserKnownHostsFile=/dev/null '
       options += '-o StrictHostKeyChecking=no '
-      out = `ssh #{options}#{@name}#{@@suffix} '#{cmds.join(' ; ')}'`
+      out = `ssh -q #{options}#{@name}#{@@suffix} '#{cmds.join(' ; ')}'`
       # if ssh returned with non-0 exit status
       $?.success? ? out : nil
     end
