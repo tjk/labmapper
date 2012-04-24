@@ -41,7 +41,7 @@ Configuration
 Token restrictions:
 
 - must be a single character
-- in this alphabet: abcdefghijklmnopqrstuvwxyz (upper case too) + 0123456789
+- in this alphabet: `abcdefghijklmnopqrstuvwxyz` (upper case too) and `0123456789`
 
 Special tokens:
 
