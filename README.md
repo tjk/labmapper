@@ -1,7 +1,7 @@
-LabMapper
+Labmapper
 =========
 
-![LabMapper screenshot](https://github.com/tjeezy/labmapper/raw/master/screenshot.png "LabMapper screenshot")
+![Labmapper screenshot](https://github.com/tjeezy/labmapper/raw/master/screenshot.png "Labmapper screenshot")
 
 A baby project.
 

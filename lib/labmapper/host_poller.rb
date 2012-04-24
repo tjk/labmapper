@@ -1,11 +1,7 @@
-require 'date'
-require 'json'
-
-module LabMapper
-
+module Labmapper
   class HostPoller
 
-    @@hostnames = ::LabMapper::Config.hosts
+    @@hostnames = Labmapper::Config.hosts
 
     @@hosts = []
     @@hostnames.each do |hostname|
@@ -31,5 +27,4 @@ module LabMapper
     end
 
   end
-
 end

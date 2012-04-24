@@ -1,7 +1,5 @@
-module LabMapper
-
+module Labmapper
   class Config
-
     class << self
 
       def configure_with_options(opts={})
@@ -12,23 +10,30 @@ module LabMapper
         @alphabet   = [(0..9), ('a'..'z'), ('A'..'Z')].map(&:to_a).reduce(&:+).join
         @re = /^(?<re>[#{@valids}\-\*]*)\|(?<dir>#{@dirs})?(?<id>#.*)?(?<classes>\..*)*$/
         # TODO handle multiple rc files in same dir?
-        @fname = Dir["./*.#{@ext}"][0]
+        @fname = Dir[File.join(File.dirname(__FILE__), "../../*.#{@ext}")][0]
         if @fname.nil?
-          raise 'Could not find labmapper config file in current directory'
-        end
-        @lines = []
-        # TODO handle too large of file
-        File.open(@fname, 'r') do |file|
-          @lines = file.read.split("\n")
+          raise 'Could not find Labmapper config file in root directory'
         end
         @configured = true
       end
 
+      def readlines(fname)
+        @lines = []
+        # TODO handle too large of file
+        File.open(fname, 'r') do |file|
+          @lines = file.read.split("\n")
+        end
+      end
+
       def parse(opts={})
         configure_with_options(opts) unless @configured
+        readlines(@fname)
+        @parsed = false
         @tokens = {}
         @lines.each do |line|
-          if m = line.match(@re)
+          if m = line.match(/^= (?<title>.*)$/)
+            @title = m[:title]
+          elsif m = line.match(@re)
             id = m[:id] ? m[:id][1..-1] : m[:re]
             classes = m[:classes] ? m[:classes].split('.')[1..-1] : []
             dir = {'^' => 'up', '>' => 'right', 'v' => 'down', '<' => 'left'}[m[:dir]]
@@ -61,13 +66,19 @@ module LabMapper
         @parsed = true
       end
 
+      def title
+        parse # unless @parsed
+        puts "== #{@title} =="
+        @title
+      end
+
       def hosts
-        parse unless @parsed
+        parse # unless @parsed
         @tokens.map {|k,v| v[:id].to_sym if k != v[:id]}.compact
       end
 
       def to_haml(force=false)
-        parse unless @parsed
+        parse # unless @parsed
         return @haml unless @haml.nil? || force
         haml  = "- availability = lambda {|n| hosts[n] ? (hosts[n]['nossh'] "
         haml += "? ' nossh' : (hosts[n]['user'] "
@@ -99,7 +110,5 @@ module LabMapper
       end
 
     end
-
   end
-
 end

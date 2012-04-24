@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require 'sinatra'
+
+require File.expand_path(File.dirname(__FILE__) + '/../environment')
+set :root, File.expand_path(File.dirname(__FILE__) + '/..')
+
+get '/' do
+  input = {}
+  File.open('../socket.json','r') do |file|
+    input = JSON.parse(file.read)
+  end
+
+  datetime = DateTime.parse(input['timestamp'])
+  timestamp = datetime.strftime('%Y/%m/%d @ %H:%M')
+
+  title = Labmapper::Config.title
+  prerender = Haml::Engine.new(Labmapper::Config.to_haml)
+  table = prerender.render(Object.new, hosts: input['hosts'])
+  haml :index, locals: {title: title, table: table, timestamp: timestamp}
+end
+
+# TODO remove this or obfuscate user on host? (privacy issue)
+# TODO either way, i propose the route to be /hosts.json
+get '/json' do
+  send_file '../socket.json'
+end

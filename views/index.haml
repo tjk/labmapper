@@ -1,17 +1,17 @@
 !!! 5
 %html{:lang => "en"}
   %head
-    %title= "CSIL Pollr"
+    %title= title
     %link{:rel => "stylesheet", :type => "text/css", :href => "css/app.css"}
   %body
     #status_box
     #header
-      %h1= "CSIL @ UCSB"
+      %h1= title
     = table
     #footer
       %p.fleft
         Powered by
-        %a{:href => "https://github.com/tjeezy/labmapper", :title => "View source on github"}= "labmapper"
+        %a{:href => "https://github.com/tjeezy/labmapper", :title => "View source on github"}= "Labmapper"
       %p.fright.timestamp= timestamp
     %script{:src => "./js/jquery-1.7.2.min.js"}
     %script{:src => "./js/app.js"}

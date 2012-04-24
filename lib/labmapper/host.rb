@@ -1,5 +1,4 @@
-module LabMapper
-
+module Labmapper
   class Host
 
     attr_accessor :name, :user, :nossh, :uptime
@@ -60,5 +59,4 @@ module LabMapper
     end
 
   end
-
 end
