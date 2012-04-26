@@ -1,6 +1,9 @@
 module Labmapper
   class HostPoller
 
+    # TODO add option (in Config?) to specify
+    # path to ssh key for Host#send_key
+
     @@hostnames = Labmapper::Config.hosts
 
     @@hosts = []
