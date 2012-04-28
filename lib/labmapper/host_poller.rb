@@ -12,7 +12,7 @@ module Labmapper
     end
 
     def self.poll(opts={})
-      Parallel.map(@@hosts, opts) do |host|
+      Parallel.each(@@hosts, opts) do |host|
         host.poll
       end
     end
