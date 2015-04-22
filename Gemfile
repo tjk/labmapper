@@ -1,7 +1,6 @@
-source :rubygems
+source 'https://rubygems.org'
 
 gem 'sinatra'
 gem 'haml'
-gem 'json'
 gem 'parallel'
 gem 'trollop'
