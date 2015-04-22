@@ -1,6 +1,5 @@
 module Labmapper
   class HostPoller
-
     # TODO add option (in Config?) to specify
     # path to ssh key for Host#send_key
 
@@ -30,6 +29,5 @@ module Labmapper
         f.puts output.to_json
       end
     end
-
   end
 end

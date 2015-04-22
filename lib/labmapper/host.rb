@@ -1,14 +1,14 @@
 module Labmapper
   class Host
-
     attr_accessor :name, :user, :nossh, :uptime
-    @@suffix = '.cs.ucsb.edu' # TODO grab from labrc
-    @@invalid_users = ['(unknown)', 'root'] # TODO fix
-    # build out ssh options
-    @@options = '-o ConnectTimeout=5 ' # in seconds
-    @@options += '-o UserKnownHostsFile=/dev/null '
-    # doesn't check RSA fingerprint
-    @@options += '-o StrictHostKeyChecking=no '
+
+    SUFFIX = '.cs.ucsb.edu' # TODO grab from labrc
+    INVALID_USERS = ['(unknown)', 'root'] # TODO fix
+    SSH_OPTIONS = {
+      'ConnectTimeout' => 5, # in seconds
+      'UserKnownHostsFile' => '/dev/null',
+      'StrictHostKeyChecking' => 'no', # don't check RSA fingerprint
+    }
 
     def initialize(name, key='~/.ssh/id_rsa.pub')
       @name = name
@@ -19,7 +19,8 @@ module Labmapper
 
     # TODO improve this -- place ssh keys before polling
     def send_key
-      res = `ssh-copy-id #{@@options}-i #{@key} #{@name}#{@@suffix}`
+      ssh_options = SSH_OPTIONS.map { |k,v| "-o #{k}=#{v}" }.join(' ')
+      res = `ssh-copy-id #{ssh_options} -i #{@key} #{@name}#{SUFFIX}`
       puts "Could not send key to #{@name}" unless $?.success?
     end
 
@@ -32,7 +33,7 @@ module Labmapper
         whos.each do |who|
           user, tty, date, time, ip = who.split
           if ip.nil? || ip.size < 6 # TODO no magic number please
-            @user = user unless @@invalid_users.index(user)
+            @user = user unless INVALID_USERS.index(user)
           end
         end
       end
@@ -51,10 +52,10 @@ module Labmapper
     private
 
     def ssh(cmds=['who'])
-      out = `ssh -q #{@@options}#{@name}#{@@suffix} '#{cmds.join(' ; ')}'`
+      ssh_options = SSH_OPTIONS.map { |k,v| "-o #{k}=#{v}" }.join(' ')
+      out = `ssh -q #{ssh_options} #{@name}#{SUFFIX} '#{cmds.join(' ; ')}'`
       # if ssh returned with non-0 exit status
       $?.success? ? out : nil
     end
-
   end
 end

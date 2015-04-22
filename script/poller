@@ -2,12 +2,8 @@
 
 require File.expand_path(File.dirname(__FILE__) + '/../environment')
 
-# TODO this is horrible
-version = `git describe`
-version = $?.success? ? version.strip : ''
-
 cmdopts = Trollop::options do
-  version "Labmapper#poller #{version} (c) 2012 TJ Koblentz"
+  version "Labmapper#poller #{Labmapper::VERSION} (c) 2012 TJ Koblentz"
   opt :serial, "SSH hosts one after the other", default: false, short: '-s'
   opt :threads, "Use threads to parallelize", type: :int, short: '-t'
   opt :processes, "Use processes to parallelize", type: :int, short: '-p'

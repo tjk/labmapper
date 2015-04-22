@@ -1,7 +1,6 @@
 module Labmapper
   class Config
     class << self
-
       def configure_with_options(opts={})
         @configured = @parsed = false
         @ext        = opts[:ext]    || 'labrc'
@@ -108,7 +107,6 @@ module Labmapper
         end
         @haml = haml # TODO why am i caching?
       end
-
     end
   end
 end
