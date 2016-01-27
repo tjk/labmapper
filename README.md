@@ -1,14 +1,14 @@
 Labmapper
 =========
 
-![Labmapper screenshot](https://github.com/tjeezy/labmapper/raw/master/screenshot.png "Labmapper screenshot")
+![Labmapper screenshot](https://github.com/tjk/labmapper/raw/master/screenshot.png "Labmapper screenshot")
 
 A baby project.
 
 Installation
 ------------
 
-    $ git clone https://tjeezy@github.com/tjeezy/labmapper.git
+    $ git clone https://github.com/tjk/labmapper.git
     $ rvm use 1.9.3@labmapper --create  # local ruby+gems container
     $ bundle install                    # grab dependencies
 
